@@ -1,6 +1,6 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.1 2004-03-01 09:08:10 jonasbn Exp $
+$Id: Changes,v 1.2 2004-03-01 15:38:53 jonasbn Exp $
 
 - Added creation of files:
 
@@ -18,3 +18,9 @@ $Id: Changes,v 1.1 2004-03-01 09:08:10 jonasbn Exp $
 
 	- module dirs in lib
 	- module file in lib
+
+- Added tests:
+
+	- pod_coverage.t
+	- pod.t
+	- 00.load.t
