@@ -1,5 +1,7 @@
 package $MODULENAME_PERL;
 
+# $CVSTAG
+
 use strict;
 use vars qw($VERSION @ISA);
 
