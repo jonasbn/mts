@@ -1,11 +1,13 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.10 2004-05-15 10:03:05 jonasbn Exp $
+$Id: Changes,v 1.11 2004-05-15 10:16:01 jonasbn Exp $
 
 0.03
 
+- Added Module_PL.top template for support of Module::Build
+
 - Added BUGS section to module template indicating how to report bugs
-  the paragraph was borrowed from LTHEGLERS Date::Holidays::DK
+  the paragraph was borrowed from LTHEGLERs Date::Holidays::DK
 
 - Added subversion (svn) and pm_to_blib to MANIFEST.SKIP template
 

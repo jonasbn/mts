@@ -24,6 +24,7 @@ t/make_test_files.t
 t/pod-coverage.t
 t/pod.t
 templates/00_load_t.tpl
+templates/Build_PL.tpl
 templates/Changes.tpl
 templates/INSTALL.tpl
 templates/Makefile_PL.tpl

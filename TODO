@@ -1,6 +1,6 @@
 TODO file for Module-Template-Setup
 
-$Id: TODO,v 1.6 2004-05-15 10:03:05 jonasbn Exp $
+$Id: TODO,v 1.7 2004-05-15 10:16:01 jonasbn Exp $
 
 - Add handling of configuration file for values
 
@@ -17,7 +17,7 @@ $Id: TODO,v 1.6 2004-05-15 10:03:05 jonasbn Exp $
 
 - Add possibility of adding new placeholders and default values
 
-- Add handling of several standard licenses
+- Add handling of several standard licenses (See license list in Module::Build)
 
 - Add handling of setup targets of ExtUtils::MakeMaker or Module::Build
 
