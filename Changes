@@ -1,0 +1,20 @@
+Changes file for Module-Template-Setup
+
+$Id: Changes,v 1.1 2004-03-01 09:08:10 jonasbn Exp $
+
+- Added creation of files:
+
+	- Changes
+	- Makefile.PL
+	- README
+	- TODO
+
+- Added creation of directories:
+
+	- lib
+	- t
+
+- Added creation of module files:
+
+	- module dirs in lib
+	- module file in lib
