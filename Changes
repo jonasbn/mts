@@ -1,8 +1,10 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.8 2004-03-31 11:42:00 jonasbn Exp $
+$Id: Changes,v 1.9 2004-05-13 11:25:53 jonasbn Exp $
 
 0.03
+
+- Added subversion (svn) and pm_to_blib to MANIFEST.SKIP template
 
 - Added <> signs around the author emailaddress in the module template
  
