@@ -1,4 +1,4 @@
-# $Id: make_module_file.t,v 1.2 2004-03-30 13:13:02 jonasbn Exp $
+# $Id: make_module_file.t,v 1.3 2004-03-30 13:21:43 jonasbn Exp $
 
 use strict;
 use Test::More tests => 2;
@@ -13,15 +13,7 @@ my $mts = Module::Template::Setup->new(modulename => $modulename);
 my $dir = cwd;
 my $tpl = new CGI::FastTemplate("$dir/templates");
 $tpl->define(
-	Changes          => "Changes.tpl",
-	INSTALL          => "INSTALL.tpl",
-	Makefile_PL      => "Makefile_PL.tpl",
-	README           => "README.tpl",
-	TODO             => "TODO.tpl",
-	pod_t            => "pod_t.tpl",
-	'pod-coverage_t' => "pod-coverage_t.tpl",
 	module_pm        => "module_pm.tpl",
-	'00_load_t'      => "00_load_t.tpl",
 );
 	
 mkdir($modulename);
