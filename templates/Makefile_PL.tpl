@@ -9,7 +9,10 @@ WriteMakefile(
     'NAME'	        => '$MODULENAME_PERL',
     'VERSION_FROM'  => 'lib/$MODULEDIRS/$MODULENAME_FILE', # finds $VERSION
 	'PREREQ_PM' => {
-		'Test::Harness'       => 0,
 		'Test::More'          => 0,
+		'Test::Pod'           => '0.95',
+		'Test::Pod::Coverage' => '0.08',
+		'File::Find'          => 0,
+		'File::Spec'          => 0
 	}
 );

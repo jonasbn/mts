@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.4 2004-03-01 17:05:33 jonasbn Exp $
+# $Id: setup.pl,v 1.5 2004-03-30 08:45:53 jonasbn Exp $
 
 use strict;
 use lib qw(lib ../lib);

@@ -7,3 +7,4 @@
 ^blib/
 ^MakeMaker-\d
 ^filegroup$
+\bCVS\b

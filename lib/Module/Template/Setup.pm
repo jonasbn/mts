@@ -1,27 +1,39 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.3 2004-03-29 14:24:10 jonasbn Exp $
+# $Id: Setup.pm,v 1.4 2004-03-30 08:45:53 jonasbn Exp $
 
 use strict;
-require Exporter;
-use vars qw($VERSION @ISA @EXPORT_OK);
+use vars qw($VERSION);
 use Env qw(HOME);
-use Config::Simple;
 use Cwd;
+use Carp;
+use Config::Simple;
 use CGI::FastTemplate;
 
 $VERSION = '0.01';
-@ISA = qw(Exporter);
-@EXPORT_OK = qw(setup);
+
+sub new {
+	my ($class, %params) = @_;
+
+	my $self = bless {}, $class || ref $class;
+
+	$self->{'modulename'} 
+		= $self->_handle_modulename($params{'modulename'});
+
+	my $cfg = new Config::Simple("$HOME/.mts/mts.ini");
+	$self->{'defaults'} = $self->_get_data($cfg);
+
+	return $self;
+}
 
 sub setup {
-	my $modulename = shift;
-	
+	my ($self, %params) = @_;
+
 	my @dirs = qw(t lib);
 	my @files = qw(Makefile.PL Changes TODO INSTALL README);
 	my @tests = qw(00.load.t pod-coverage.t pod.t);
 
-	my $tpl = new CGI::FastTemplate("blib/templates");
+	my $tpl = new CGI::FastTemplate("$HOME/.mts/templates");
 	$tpl->define(
 		Changes          => "Changes.tpl",
 		INSTALL          => "INSTALL.tpl",
@@ -34,28 +46,26 @@ sub setup {
 		'00_load_t'      => "00_load_t.tpl",
 	);
 
-	my $defaults = get_data($modulename);
+	$tpl->assign($self->defaults);
 
-	$tpl->assign($defaults);
-
-	mkdir($modulename);
-	chdir($modulename);
-	make_dirs(@dirs);
-	make_files($tpl, $defaults, @files);
-	make_test_files($tpl, $defaults, @tests);
+	mkdir($self->{'modulename'});
+	chdir($self->{'modulename'});
+	$self->make_dirs(@dirs);
+	$self->make_files($tpl, @files);
+	$self->make_test_files($tpl, @tests);
 
 	my $moduledir = getcwd();
-	make_module_dirs($modulename);
-	make_module_file($modulename, $tpl, $defaults);
+	$self->make_module_dirs($self->{'modulename'});
+	$self->make_module_file($self->{'modulename'}, $tpl);
 	chdir($moduledir);
 
 	return 1;
 }
 
-sub get_data {
-	my $modulename = shift;
+sub _get_data {
+	my ($self, $cfg) = @_;
 
-	my $modulename_perl = $modulename;
+	my $modulename_perl = $self->{'modulename'};
 
 	$modulename_perl =~ s/-/::/g;
 
@@ -67,15 +77,19 @@ sub get_data {
 	my $year = (localtime(time))[5] + 1900;
 
 	my %defaults = (
-		CVSTAG          => "\$Id\$",
-		MODULENAME      => $modulename,
-		MODULENAME_PERL => $modulename_perl,
-		MODULENAME_FILE => $modulename_file,
-		MODULEDIRS      => $moduledirs,
-		AUTHORNAME      => 'Jonas B. Nielsen (jonasbn)',
-		AUTHOREMAIL     => '<jonasbn@cpan.org>',
+		CVSTAG          => $cfg->{'cvstag'}?$cfg->{'cvstag'}:"\$Id\$",
+		MODULENAME      => $self->{'modulename'},
+		MODULENAME_PERL => $self->{'modulename_perl'},
+		MODULENAME_FILE => $self->{'modulename_file'},
+		MODULEDIRS      => $self->{'moduledirs'},
+		AUTHORNAME      =>
+			$cfg->{'AUTHORNAME'}?$cfg->{'AUTHORNAME'}:'',
+		AUTHOREMAIL     =>
+			$cfg->{'AUTHOREMAIL'}?$cfg->{'AUTHOREMAIL'}:'',
 		LICENSENAME     => '',
+			$cfg->{'LICENSENAME'}?$cfg->{'LICENSENAME'}:'',
 		LICENSEDETAILS  => '',
+			$cfg->{'LICENSEDETAILS'}?$cfg->{'LICENSEDETAILS'}:'',
 		DATEYEAR        => $year,
 		VERSIONNUMBER   => '0.01',
 	);
@@ -83,11 +97,26 @@ sub get_data {
 	return \%defaults;
 }
 
-sub make_module_dirs {
-	my $modulename = shift;
+sub _handle_modulename {
+	my ($self, $modulename) = @_;
+	
+	my $tmp_modulename = $modulename;
+	$tmp_modulename =~ s/::/-/g; #substituting double colons
+	
+	#asserting modulename validity
+	unless ($tmp_modulename =~ m/^([A-Za-z]+)(\w*)(?=\2|-\2)/) {
+		warn ("invalid modulename: $modulename");
+		return undef;
+	}
+
+	return $tmp_modulename;
+}
+
+sub _make_module_dirs {
+	my ($self) = @_;
 
 	chdir('lib');
-	my @dirs = split(/-/, $modulename);
+	my @dirs = split(/-/, $self->{'modulename'});
 	pop(@dirs);
 
 	foreach my $dir (@dirs) {
@@ -98,33 +127,33 @@ sub make_module_dirs {
 	return 1;
 }
 
-sub make_test_files {
-	my ($tpl, $defaults, @tests) = @_;
+sub _make_test_files {
+	my ($self, $tpl, @tests) = @_;
 
 	my $moduledir = getcwd();
 	chdir('t');
 	foreach my $test (@tests) {
-		make_file($test, $tpl, $defaults);
+		$self->make_file($test, $tpl);
 	}
 	chdir($moduledir);
 	
 	return 1;
 }
 
-sub make_module_file {
-	my ($modulename, $tpl, $defaults) = @_;
+sub _make_module_file {
+	my ($self, $tpl) = @_;
 
-	my @dirs = split(/-/, $modulename);
+	my @dirs = split(/-/, $self->{'modulename'});
 	my $file = pop(@dirs);
 	$file .= '.pm';
 
-	make_file($file, $tpl, $defaults, 'module_pm');
+	$self->_make_file($file, $tpl, 'module_pm');
 
 	return 1;
 }
 
-sub make_dirs {
-	my @dirs = @_;
+sub _make_dirs {
+	my ($self, @dirs) = @_;
 
 	foreach my $dir (@dirs) {
 		mkdir($dir);
@@ -133,25 +162,25 @@ sub make_dirs {
 	return 1;
 }
 
-sub make_files {
-	my ($tpl, $defaults, @files) = @_;
+sub _make_files {
+	my ($self, $tpl, @files) = @_;
 
 	foreach my $file (@files) {
-		make_file($file, $tpl, $defaults);
+		$self->_make_file($file, $tpl);
 	}
 
 	return 1;
 }
 
-sub make_file {
-	my ($filename, $tpl, $defaults, $template_name) = @_;
+sub _make_file {
+	my ($self, $filename, $tpl, $template_name) = @_;
 
 	if (! $template_name) {
 		$template_name = $filename;
 		$template_name =~ s/\./_/g;
 		$template_name =~ s[_(w+)$][\.$1];
 	}
-	$tpl->assign($defaults);
+	$tpl->assign($self->{'defaults'});
 	$tpl->parse($template_name => "$template_name");
 	my $content = $tpl->fetch($template_name);
 
@@ -168,13 +197,49 @@ __END__
 
 =head1 NAME
 
-Module::Template::Setup -
+Module::Template::Setup - aid in setting up new modules based on templates
+
+=head1 VERSION
+
+Module::Template::Setup 0.01
 
 =head1 SYNOPSIS
 
+my $module = Module::Template::Setup->new($modulename);
+
+$module->setup();
+
 =head1 ABSTRACT
 
+The goal of Module::Template::Setup is to provide a simple tool for speeding up
+the proces of spawning new modules by taking away all the borrowing work of
+adding all the required files and populating them with all the redundant 
+information.
+
+The module tries to combine the following parameters:
+
+=over 4
+
+=item templated files
+
+=item default values
+
+=item configurable values
+
+=item commandline tools
+
+=back
+
 =head1 DESCRIPTION
+
+=head2 METHODS
+
+=head2 new
+
+This is the constructor. It takes one argument a string holding the modulename
+in the following format.
+
+=head2 setup
 
 =head2 RESERVED WORDS
 
@@ -189,7 +254,7 @@ $VERSION
 =head1 Caveats/Bugs
 
 When running the script, CGI::FastTemplate issues a warning, due to the
-face that some of the templates contain a scalar called: $VERSION.
+fact that some of the templates contain a scalar called: $VERSION.
 
 Since CGI::FastTemplate does (should) not know any variables of this
 name and it follows the naming convention for $placeholders to be used,
@@ -201,16 +266,48 @@ The template naming is also somewhat crazy, apparently templates names
 cannot contain - (dash) or start with numbers, then they have to be
 quoted.
 
+=head1 TODO
+
+=over 4
+
+=item Implement handling and distinction of both global and local templates
+
+=item Add AUTHOR file?
+
+=item Add LICENSE file?
+
+=item Add possibility of adding new templates and removing existing
+
+=item Add possibility of adding new placeholders and default values
+
+=back
+
 =head1 SEE ALSO
+
+=over 4
+
+=item ExtUtils::MakeMaker
+
+=item Module::Build
+
+=item Module::Release
+
+=item Test::Pod
+
+=item Test::Pod::Coverage
+
+=back
 
 =head1 AUTHOR
 
-Jonas B. Nielsen (jonasbn) - <jonasbn@cpan.org>
+Jonas B. Nielsen (jonasbn) - E<lt>jonasbn@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
 Module::Template::Setup is (C) by Jonas B. Nielsen (jonasbn) 2004
 
-Module::Template::Setup is released under ???
+Module::Template::Setup is free software and is released
+under the Artistic License. See 
+L<http://www.perl.com/language/misc/Artistic.html> for details. 
 
 =cut
