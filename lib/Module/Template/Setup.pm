@@ -1,13 +1,13 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.8 2004-03-30 14:51:15 jonasbn Exp $
+# $Id: Setup.pm,v 1.9 2004-03-30 16:08:43 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
 use Env qw(HOME);
 use Cwd;
 use Carp;
-use AppConfig;
+use Config::Simple;
 use CGI::FastTemplate;
 
 $VERSION = '0.01';
@@ -15,7 +15,16 @@ $VERSION = '0.01';
 sub new {
 	my ($class, %params) = @_;
 
-	my $self = bless {}, $class || ref $class;
+	my $self = bless {
+		defaults => {
+			AUTHORNAME     => '',
+			AUTHOREMAIL    => '',
+			CVSTAG         => '',
+			DATEYEAR       => '',
+			LICENSENAME    => '',
+			LICENSEDETAILS => '',
+		},
+	}, $class || ref $class;
 
 	$self->{'defaults'}->{'MODULENAME'} 
 		= $self->_handle_modulename($params{'modulename'});
@@ -31,10 +40,10 @@ sub new {
 
 	$self->{'defaults'}->{'MODULEDIRS'} = join('/',@{$self->{'moduledirs'}});
 
-	my $cfg = AppConfig->new();
-	my $configfile = "$HOME/.mts/mts.ini";
-	if (-e  $configfile && -r $configfile) {
-		$cfg->file($configfile);
+	my $cfg;
+	if ($params{'configfile'} && -e  $params{'configfile'} && -r $params{'configfile'}) {
+		
+		$cfg = new Config::Simple($params{'configfile'});
 	}
 	$self->{'defaults'} = $self->_get_data($cfg, \%params);
 
@@ -46,25 +55,29 @@ sub _get_data {
 
 	my $year = (localtime(time))[5] + 1900;
 
-	my %all_defaults = (
-		CVSTAG          => 
-			$cfg->{'CVSTAG'}?$cfg->{'CVSTAG'}:"\$Id\$",
-		AUTHORNAME      =>
-			$cfg->{'AUTHORNAME'}?$cfg->{'AUTHORNAME'}:'',
-		AUTHOREMAIL     =>
-			$cfg->{'AUTHOREMAIL'}?$cfg->{'AUTHOREMAIL'}:'',
-		LICENSENAME     =>
-			$cfg->{'LICENSENAME'}?$cfg->{'LICENSENAME'}:'',
-		LICENSEDETAILS  =>
-			$cfg->{'LICENSEDETAILS'}?$cfg->{'LICENSEDETAILS'}:'',
-		DATEYEAR        => 
-			$params->{'YEAR'}?$params->{'YEAR'}:"$year",
-		VERSIONNUMBER   =>
-			$params->{'VERSIONNUMBER'}?$params->{'VERSIONNUMBER'}:'0.01',
-	);
+	my %all_defaults;
+	if ($cfg) {
+		$all_defaults{'CVSTAG'} = 
+			$cfg->param('CVSTAG')?$cfg->param('CVSTAG'):"\$Id\$";
+		$all_defaults{'AUTHORNAME'} =
+			$cfg->param('AUTHORNAME')?$cfg->param('AUTHORNAME'):'';
+		$all_defaults{'AUTHOREMAIL'} =
+			$cfg->param('AUTHOREMAIL')?$cfg->param('AUTHOREMAIL'):'';
+		$all_defaults{'LICENSENAME'} =
+			$cfg->param('LICENSENAME')?$cfg->param('LICENSENAME'):'';
+		$all_defaults{'LICENSEDETAILS'} =
+			$cfg->param('LICENSEDETAILS')?$cfg->param('LICENSEDETAILS'):'';
+	}
+	
+	if ($params) {
+		$all_defaults{'DATEYEAR'} =
+			$params->{'YEAR'}?$params->{'YEAR'}:"$year";
+		$all_defaults{'VERSIONNUMBER'} =
+			$params->{'VERSIONNUMBER'}?$params->{'VERSIONNUMBER'}:'0.01';
+	}
 
 	foreach my $d (keys (%{$self->{'defaults'}})) {
-		$all_defaults{$d} = $self->{'defaults'}->{$d};
+		$all_defaults{$d} = $self->{'defaults'}->{$d} if ($self->{defaults}->{$d});
 	}
 
 	return \%all_defaults;
@@ -310,6 +323,8 @@ a file based on a template (SEE: B<TEMPLATES>)
 
 =head2 RESERVED WORDS
 
+Reserverd words are a list of names, which are not suitable as template placeholders.
+
 =over 4
 
 =item * $VERSION
@@ -372,6 +387,60 @@ placed in the appropriate sub directory based on module name (SEE: B<setup>).
 
 =head2 DEFAULTS
 
+These are some of the defined defaults values for the PLACEHOLDERS used in the 
+TEMPLATES.
+
+=over 4
+
+=item CVSTAG is set to B<$Id: Setup.pm,v 1.9 2004-03-30 16:08:43 jonasbn Exp $> 
+
+=item DATEYEAR is set to current year (for copyright notice)
+
+=item VERSIONNUMBER defaults to 0.01
+
+=back
+
+=head2 PLACEHOLDERS
+
+Apart from the values mentioned in DEFAULTS (above) this is a list of the current 
+placeholders, which can be set.
+
+=over 4
+
+=item AUTHORNAME
+
+Should be set in you configuration file
+
+=item AUTHOREMAIL
+
+Should be set in you configuration file
+
+=item MODULENAME
+
+This is comes from the argument given to the constructor
+
+=item MODULENAME_PERL
+
+This is auto-resolved from the MODULENAME
+
+=item MODULENAME_FILE
+
+This is auto-resolved from the MODULENAME
+
+=item MODULEDIRS
+
+This is auto-resolved from the MODULENAME
+
+=item LICENSENAME
+
+Should be set in you configuration file
+
+=item LICENSEDETAILS
+
+Should be set in you configuration file
+
+=back
+
 =head1 CAVEATS
 
 When running the script, CGI::FastTemplate issues a warning, due to the
@@ -390,11 +459,11 @@ quoted.
 =head1 BUGS
 
 There are no known bugs at the time of writing, if you experience any bugs,
-please report them to:
+please report them using the following email address:
 
 E<lt>bug-module-template-setup@rt.cpan.orgE<gt>
 
-Feedback also welcome on this address.
+Feedback also welcome on this address or directly to me on the address below (SEE: B<AUTHOR>).
 
 =head1 TODO
 
@@ -409,6 +478,12 @@ Feedback also welcome on this address.
 =item Add possibility of adding new templates and removing existing
 
 =item Add possibility of adding new placeholders and default values
+
+=item Add handling of several standard licenses
+
+=item Add handling of setup targets of ExtUtils::MakeMaker or Module::Build
+
+=item Add bug reporting address?
 
 =back
 
