@@ -1,4 +1,4 @@
-# $Id: make_modulename_file.t,v 1.1 2004-03-30 12:07:40 jonasbn Exp $
+# $Id: make_modulename_file.t,v 1.2 2004-03-30 13:13:02 jonasbn Exp $
 
 use strict;
 use Test::More tests => 1;
@@ -13,6 +13,5 @@ my $mts = Module::Template::Setup->new(modulename => $modulename);
 my $m = $mts->_make_modulename_file();
 $modulename =~ m/-([A-Za-z0-9_]+)$/;
 my $filename = $1;
-print STDERR "We produced: $filename\n";
 
 like($m, qr/^$filename\.pm$/);

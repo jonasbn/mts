@@ -1,4 +1,4 @@
-# $Id: make_files.t,v 1.1 2004-03-30 12:07:40 jonasbn Exp $
+# $Id: make_files.t,v 1.2 2004-03-30 13:13:02 jonasbn Exp $
 
 use strict;
 use Test::More tests => 5;
@@ -12,7 +12,6 @@ my @files = qw(Makefile.PL Changes TODO INSTALL README);
 my $mts = Module::Template::Setup->new(modulename => $modulename);
 
 my $dir = cwd;
-print "$dir\n";
 my $tpl = new CGI::FastTemplate("$dir/templates");
 $tpl->define(
 	Changes          => "Changes.tpl",

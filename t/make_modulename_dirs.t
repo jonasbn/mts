@@ -1,4 +1,4 @@
-# $Id: make_modulename_dirs.t,v 1.1 2004-03-30 12:07:40 jonasbn Exp $
+# $Id: make_modulename_dirs.t,v 1.2 2004-03-30 13:13:02 jonasbn Exp $
 
 use strict;
 use Test::More tests => 4;
@@ -17,3 +17,4 @@ my $i = 0;
 foreach my $dir (@dirs) {
 	is($dir, $parts[$i++]);
 }
+

@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.5 2004-03-30 12:07:40 jonasbn Exp $
+# $Id: Setup.pm,v 1.6 2004-03-30 13:13:02 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -26,7 +26,7 @@ sub new {
 	$self->{'modulename_perl'} 
 		= $self->_make_modulename_perl();
 
-	$self->{'module_dirs'} 
+	@{$self->{'moduledirs'}} 
 		= $self->_make_modulename_dirs();
 
 	my $cfg;
@@ -128,13 +128,15 @@ sub _make_modulename_dirs {
 sub _make_module_dirs {
 	my ($self) = @_;
 
+	my $moduledir = getcwd();
 	chdir('lib');
-	
-	foreach my $dir (@{$self->{'module_dirs'}}) {
+
+	foreach my $dir (@{$self->{'moduledirs'}}) {
 		mkdir($dir);
 		chdir($dir);
 	}
-	
+	chdir($moduledir);
+
 	return 1;
 }
 
@@ -144,7 +146,7 @@ sub _make_test_files {
 	my $moduledir = getcwd();
 	chdir('t');
 	foreach my $test (@tests) {
-		$self->make_file($test, $tpl);
+		$self->_make_file($test, $tpl);
 	}
 	chdir($moduledir);
 	
