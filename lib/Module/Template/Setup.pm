@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.15 2004-05-15 14:15:04 jonasbn Exp $
+# $Id: Setup.pm,v 1.16 2004-05-15 14:25:53 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION %licenses);
@@ -337,7 +337,7 @@ in either of the following formats:
 
 This method does the actual work, based on the initialized object.
 
-setup takes an optionion argument build which can be set to either:
+setup takes an optional argument 'build' which can be set to either:
 
 =over 4
 
@@ -346,6 +346,27 @@ setup takes an optionion argument build which can be set to either:
 =item make - creates a Makefile.PL
 
 =back
+
+setup also takes can also fill in license details for the following license 
+types:
+
+=over 4
+
+=item artistic (default)
+
+=item gpl
+
+=item lgpl
+
+=item bsd
+
+=back
+
+It is possilbe to give an license name, which is unknown by the module, or you
+can overwrite the license description my giving the argument "licensedetails".
+
+See Module::Template::Setup::Licenses for more details on licenses -
+more licenses or better descriptions are of course welcome.
 
 The proces in setup.
 
