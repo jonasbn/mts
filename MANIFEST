@@ -31,3 +31,4 @@ templates/pod_t.tpl
 templates/README.tpl
 templates/TODO.tpl
 TODO
+META.yml                                Module meta-data (added by MakeMaker)

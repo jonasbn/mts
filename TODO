@@ -1,11 +1,24 @@
 TODO file for Module-Template-Setup
 
-$Id: TODO,v 1.4 2004-03-28 19:48:38 jonasbn Exp $
-
-- Start writing tests and docs
+$Id: TODO,v 1.5 2004-03-31 07:38:04 jonasbn Exp $
 
 - Add handling of configuration file for values
 
-- Add handling of 'personal' templates in $HOME/.module_templates
+- Add handling of 'personal' templates in $HOME/.mts/templates, meaning
+  handling and distinction of both global and local templates
 
 - Fix possible problem with LICENSE specification
+
+- Add AUTHOR file?
+
+- Add LICENSE file?
+
+- Add possibility of adding new templates and removing existing 
+
+- Add possibility of adding new placeholders and default values
+
+- Add handling of several standard licenses
+
+- Add handling of setup targets of ExtUtils::MakeMaker or Module::Build
+
+- Add bug reporting address to template?

@@ -1,14 +1,15 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.5 2004-03-30 08:45:53 jonasbn Exp $
+# $Id: setup.pl,v 1.6 2004-03-31 07:38:04 jonasbn Exp $
 
 use strict;
 use lib qw(lib ../lib);
-use Module::Template::Setup qw(setup);
+use Module::Template::Setup;
 
 my $modulename = $ARGV[0];
 
-setup($modulename);
+my $mts = Module::Template::Setup->new(modulename => $modulename);
+$mts->setup();
 
 exit(0);
 

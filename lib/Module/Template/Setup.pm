@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.10 2004-03-30 16:21:56 jonasbn Exp $
+# $Id: Setup.pm,v 1.11 2004-03-31 07:38:04 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -229,7 +229,7 @@ sub _make_file {
 		$template_name =~ s/\./_/g;
 		$template_name =~ s[_(w+)$][\.$1];
 	}
-	$tpl->assign($self->{'defaults'});
+	$tpl->assign(\%{$self->{'defaults'}});
 	$tpl->parse($template_name => "$template_name");
 	my $content = $tpl->fetch($template_name);
 

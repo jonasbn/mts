@@ -1,28 +1,35 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.3 2004-03-01 17:05:33 jonasbn Exp $
+$Id: Changes,v 1.4 2004-03-31 07:38:04 jonasbn Exp $
+
+0.01 Released Tue Mar 30 2004
+
+- Fixed not-updated bin/setup.pl
+
+Pre 0.01
 
 - Added creation of files:
-
 	- Changes
 	- Makefile.PL
 	- README
 	- TODO
 
 - Added creation of directories:
-
 	- lib
 	- t
 
 - Added creation of module files:
-
 	- module dirs in lib
 	- module file in lib
 
 - Added tests:
-
 	- pod_coverage.t
 	- pod.t
 	- 00.load.t
 
 - Moved central stuff from bin/setup.pl to lib/Module/Template/Setup.pm
+
+- Many fixes, changes
+
+- Docs and tests added
+
