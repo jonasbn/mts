@@ -24,6 +24,16 @@ $MODULENAME_PERL -
 
 =head1 DESCRIPTION
 
+=head1 BUGS
+
+Please report issues via CPAN RT:
+
+  http://rt.cpan.org/NoAuth/Bugs.html?Dist=$MODULENAME
+
+or by sending mail to
+
+  bug-$MODULENAME@rt.cpan.org
+
 =head1 SEE ALSO
 
 =head1 AUTHOR
