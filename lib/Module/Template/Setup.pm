@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.12 2004-03-31 10:48:55 jonasbn Exp $
+# $Id: Setup.pm,v 1.13 2004-03-31 11:16:52 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -10,7 +10,7 @@ use Carp;
 use Config::Simple;
 use CGI::FastTemplate;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 sub new {
 	my ($class, %params) = @_;
@@ -89,7 +89,7 @@ sub setup {
 	my ($self, %params) = @_;
 
 	my @dirs = qw(t lib);
-	my @files = qw(Makefile.PL Changes TODO INSTALL README);
+	my @files = qw(Makefile.PL Changes TODO INSTALL README MANIFEST.SKIP);
 	my @tests = qw(00.load.t pod-coverage.t pod.t);
 
 	my $tpl = new CGI::FastTemplate("$HOME/.mts/templates");
@@ -97,6 +97,7 @@ sub setup {
 		Changes          => "Changes.tpl",
 		INSTALL          => "INSTALL.tpl",
 		Makefile_PL      => "Makefile_PL.tpl",
+		MANIFEST_SKIP    => "MANIFEST_SKIP.tpl",
 		README           => "README.tpl",
 		TODO             => "TODO.tpl",
 		pod_t            => "pod_t.tpl",

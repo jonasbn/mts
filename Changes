@@ -1,6 +1,10 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.5 2004-03-31 10:48:55 jonasbn Exp $
+$Id: Changes,v 1.6 2004-03-31 11:16:52 jonasbn Exp $
+
+0.03
+
+- Added MANIFEST.SKIP template (MANIFEST_SKIP.tpl)
 
 0.02 Released Wed Mar 31 2004, update recommended
 

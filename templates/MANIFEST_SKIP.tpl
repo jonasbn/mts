@@ -1,0 +1,10 @@
+\bRCS\b
+^MANIFEST\.
+^Makefile$
+~$
+\.html$
+\.old$
+^blib/
+^MakeMaker-\d
+^filegroup$
+\bCVS\b
