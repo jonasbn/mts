@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.13 2004-03-31 11:16:52 jonasbn Exp $
+# $Id: Setup.pm,v 1.14 2004-05-15 12:25:08 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -41,7 +41,7 @@ sub new {
 	$self->{'defaults'}->{'MODULEDIRS'} = join('/',@{$self->{'moduledirs'}});
 
 	my $cfg;
-	if ($params{'configfile'} && -e  $params{'configfile'} && -r $params{'configfile'}) {
+	if ($params{'configfile'} && -e _ && -r _) {
 		
 		$cfg = new Config::Simple($params{'configfile'});
 	}
@@ -89,14 +89,14 @@ sub setup {
 	my ($self, %params) = @_;
 
 	my @dirs = qw(t lib);
-	my @files = qw(Makefile.PL Changes TODO INSTALL README MANIFEST.SKIP);
+	my @files = qw(Changes TODO INSTALL README MANIFEST.SKIP);
 	my @tests = qw(00.load.t pod-coverage.t pod.t);
+	my $debug = $params{'debug'}?1:0;
 
 	my $tpl = new CGI::FastTemplate("$HOME/.mts/templates");
 	$tpl->define(
 		Changes          => "Changes.tpl",
 		INSTALL          => "INSTALL.tpl",
-		Makefile_PL      => "Makefile_PL.tpl",
 		MANIFEST_SKIP    => "MANIFEST_SKIP.tpl",
 		README           => "README.tpl",
 		TODO             => "TODO.tpl",
@@ -106,6 +106,23 @@ sub setup {
 		'00_load_t'      => "00_load_t.tpl",
 	);
 
+	if ($params{'build'} eq 'build') {
+		push (@files, "Build.PL");
+		$tpl->define(
+			Build_PL => 'Build_PL.tpl',
+		);
+		
+	} elsif (not $params{'build'} or $params{'build'} eq 'make') {
+		push (@files, "Makefile.PL");
+		$tpl->define(
+			Makefile_PL => 'Makefile_PL.tpl',
+		);
+	}
+	if ($debug) {
+		print STDERR "We are have target: $params{'build'}\n";
+		use Data::Dumper;
+		print STDERR Dumper $tpl;
+	}
 	$tpl->assign($self->{'defaults'});
 
 	mkdir($self->{'defaults'}->{'MODULENAME'});
@@ -303,7 +320,19 @@ in either of the following formats:
 
 =head3 setup
 
-This method does the actual work, based on the initialized object:
+This method does the actual work, based on the initialized object.
+
+setup takes an optionion argument build which can be set to either:
+
+=over 4
+
+=item build - creates a Build.PL
+
+=item make - creates a Makefile.PL
+
+=back
+
+The proces in setup.
 
 =over 4
 
@@ -355,6 +384,8 @@ The following templates are used to populate the directories.
 In the root directory:
 
 =over 4
+
+=item Makefile_PL.tpl or Build_PL.tpl
 
 =item Changes.tpl
 
