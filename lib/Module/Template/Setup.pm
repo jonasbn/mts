@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.4 2004-03-30 08:45:53 jonasbn Exp $
+# $Id: Setup.pm,v 1.5 2004-03-30 12:07:40 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -20,7 +20,20 @@ sub new {
 	$self->{'modulename'} 
 		= $self->_handle_modulename($params{'modulename'});
 
-	my $cfg = new Config::Simple("$HOME/.mts/mts.ini");
+	$self->{'modulename_file'} 
+		= $self->_make_modulename_file();
+
+	$self->{'modulename_perl'} 
+		= $self->_make_modulename_perl();
+
+	$self->{'module_dirs'} 
+		= $self->_make_modulename_dirs();
+
+	my $cfg;
+	my $configfile = "$HOME/.mts/mts.ini";
+	if (-e  $configfile && -r $configfile) {
+		$cfg = new Config::Simple($configfile);
+	}
 	$self->{'defaults'} = $self->_get_data($cfg);
 
 	return $self;
@@ -50,13 +63,13 @@ sub setup {
 
 	mkdir($self->{'modulename'});
 	chdir($self->{'modulename'});
-	$self->make_dirs(@dirs);
-	$self->make_files($tpl, @files);
-	$self->make_test_files($tpl, @tests);
+	$self->_make_dirs(@dirs);
+	$self->_make_files($tpl, @files);
+	$self->_make_test_files($tpl, @tests);
 
 	my $moduledir = getcwd();
-	$self->make_module_dirs($self->{'modulename'});
-	$self->make_module_file($self->{'modulename'}, $tpl);
+	$self->_make_module_dirs($self->{'modulename'});
+	$self->_make_module_file($self->{'modulename'}, $tpl);
 	chdir($moduledir);
 
 	return 1;
@@ -65,15 +78,6 @@ sub setup {
 sub _get_data {
 	my ($self, $cfg) = @_;
 
-	my $modulename_perl = $self->{'modulename'};
-
-	$modulename_perl =~ s/-/::/g;
-
-	my @dirs = split(/::/, $modulename_perl);
-	my $modulename_file = pop(@dirs);
-	$modulename_file .= '.pm';
-
-	my ($moduledirs) = join('/',@dirs);
 	my $year = (localtime(time))[5] + 1900;
 
 	my %defaults = (
@@ -112,14 +116,21 @@ sub _handle_modulename {
 	return $tmp_modulename;
 }
 
+sub _make_modulename_dirs {
+	my ($self) = @_;
+
+	my @dirs = split(/-/, $self->{'modulename'});
+	pop(@dirs);
+
+	return @dirs;
+}
+
 sub _make_module_dirs {
 	my ($self) = @_;
 
 	chdir('lib');
-	my @dirs = split(/-/, $self->{'modulename'});
-	pop(@dirs);
-
-	foreach my $dir (@dirs) {
+	
+	foreach my $dir (@{$self->{'module_dirs'}}) {
 		mkdir($dir);
 		chdir($dir);
 	}
@@ -140,14 +151,29 @@ sub _make_test_files {
 	return 1;
 }
 
-sub _make_module_file {
-	my ($self, $tpl) = @_;
+sub _make_modulename_file {
+	my ($self) = @_;
 
 	my @dirs = split(/-/, $self->{'modulename'});
 	my $file = pop(@dirs);
 	$file .= '.pm';
 
-	$self->_make_file($file, $tpl, 'module_pm');
+	return $file;
+}
+
+sub _make_modulename_perl {
+	my ($self) = @_;
+
+	my $name = $self->{'modulename'};
+	$name =~ s/-/::/g;
+
+	return $name;
+}
+
+sub _make_module_file {
+	my ($self, $tpl) = @_;
+
+	$self->_make_file($self->{'modulename_file'}, $tpl, 'module_pm');
 
 	return 1;
 }
@@ -216,7 +242,7 @@ the proces of spawning new modules by taking away all the borrowing work of
 adding all the required files and populating them with all the redundant 
 information.
 
-The module tries to combine the following parameters:
+The module aims to combine the following parameters:
 
 =over 4
 
@@ -226,32 +252,117 @@ The module tries to combine the following parameters:
 
 =item configurable values
 
-=item commandline tools
+=item commandline arguments
 
 =back
+
+And will setup all the necessary files required in a module distribution.
 
 =head1 DESCRIPTION
 
 =head2 METHODS
 
-=head2 new
+=head3 new
 
 This is the constructor. It takes one argument a string holding the modulename
-in the following format.
+in either of the following formats.
 
-=head2 setup
+=over 4
+
+=item Modulename
+
+=item Module::Name
+
+=item Module-Name
+
+=back
+
+=head3 setup
+
+This method does the actual work, based on the initialized object:
+
+=over 4
+
+=item 1. Creates a root directory named after the specified module (SEE: B<new>)
+
+=item 2. Creates sub directories (SEE: B<DIRECTORIES>)
+
+=item 3. Populates root directory with files based on templates 
+(SEE: B<TEMPLATES>)
+
+=item 4. Creates and module directory structure in the B<lib> directory
+(SEE: B<DIRECTORIES>)
+
+=item 5. Populates the module directory structure in the B<lib> directory with
+a file based on a template (SEE: B<TEMPLATES>)
+
+=back
 
 =head2 RESERVED WORDS
 
 =over 4
 
-=item *
-
-$VERSION
+=item * $VERSION
 
 =back
 
-=head1 Caveats/Bugs
+=head2 DIRECTORIES
+
+The following directories are always built:
+
+=over 4
+
+=item Module-Name (this directory acts as root directory for everything else)
+
+=item t (for tests)
+
+=item lib (for the module)
+
+=back
+
+=head2 TEMPLATES
+
+The following templates are used to populate the directories.
+
+In the root directory:
+
+=over 4
+
+=item Changes.tpl
+
+=item INSTALL.tpl
+
+=item README.tpl
+
+=item TODO.tpl
+
+=item t (directory)
+
+=over 4
+
+=item 00_load_t.tpl
+
+=item pod_t.tpl
+
+=item pod-coverage_t.tpl
+
+=back
+
+=item lib (directory)
+
+=over 4
+
+=item E<lt>ModulenameE<gt>_pm.tpl
+
+placed in the appropriate sub directory based on module name (SEE: B<setup>).
+
+=back
+
+=back
+
+=head2 DEFAULTS
+
+=head1 CAVEATS
 
 When running the script, CGI::FastTemplate issues a warning, due to the
 fact that some of the templates contain a scalar called: $VERSION.
@@ -265,6 +376,15 @@ Please refer to the list of RESERVED WORDS for more of these.
 The template naming is also somewhat crazy, apparently templates names
 cannot contain - (dash) or start with numbers, then they have to be
 quoted.
+
+=head1 BUGS
+
+There are no known bugs at the time of writing, if you experience any bugs,
+please report them to:
+
+E<lt>bug-module-template-setup@rt.cpan.orgE<gt>
+
+Feedback also welcome on this address.
 
 =head1 TODO
 
