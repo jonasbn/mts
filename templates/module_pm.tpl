@@ -44,7 +44,7 @@ or by sending mail to
 
 =head1 AUTHOR
 
-$AUTHORNAME - E<gt> $AUTHOREMAIL E<gt>
+$AUTHORNAME - C<< <$AUTHOREMAIL> >>
 
 =head1 COPYRIGHT
 
