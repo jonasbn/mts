@@ -1,0 +1,9 @@
+README file for Module-Template-Setup
+
+$Id: README,v 1.1 2004-02-28 21:27:25 jonasbn Exp $ 
+
+The goal of Module-Template-Setup is to make a simple module for setting up 
+module frameworks based on templates.
+
+The goal is to make a framework, can be customized to the authors needs without
+to many parameters, but a combination of templates and configurations.

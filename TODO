@@ -1,0 +1,20 @@
+TODO file for Module-Template-Setup
+
+$Id: TODO,v 1.1 2004-02-28 21:27:25 jonasbn Exp $
+
+- Add creation of files:
+
+	- Changes
+	- Makefile.PL
+	- README
+	- TODO
+
+- Add creation of directories:
+
+	- lib
+	- t
+
+- Add creation of module files:
+
+	- module dirs in lib
+	- module file in lib

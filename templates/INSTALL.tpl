@@ -1,0 +1,3 @@
+INSTALL file for $MODULENAME
+
+$CVSTAG
