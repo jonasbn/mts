@@ -1,20 +1,11 @@
 TODO file for Module-Template-Setup
 
-$Id: TODO,v 1.1 2004-02-28 21:27:25 jonasbn Exp $
+$Id: TODO,v 1.2 2004-03-01 09:07:32 jonasbn Exp $
 
-- Add creation of files:
+- Start writing tests and docs
 
-	- Changes
-	- Makefile.PL
-	- README
-	- TODO
+- Move central stuff from bin/setup.pl to lib/Module/Template/Setup.pm
 
-- Add creation of directories:
+- Add handling of configuration file for values
 
-	- lib
-	- t
-
-- Add creation of module files:
-
-	- module dirs in lib
-	- module file in lib
+- Add handling of 'personal' templates in $HOME/.module_templates
