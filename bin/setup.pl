@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.8 2004-05-15 12:25:08 jonasbn Exp $
+# $Id: setup.pl,v 1.9 2004-05-15 14:15:04 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION %opts);
@@ -9,7 +9,7 @@ use lib qw(lib ../lib);
 use Getopt::Std;
 use Module::Template::Setup;
 
-getopts('dhb:', \%opts);
+getopts('dhb:l:', \%opts);
 
 my $modulename = $ARGV[0] || help();
 
@@ -27,22 +27,31 @@ if ($opts{'d'}) {
 }
 
 my $mts = Module::Template::Setup->new(
-	modulename => $modulename,
-	configfile => "$HOME/.mts/mts.ini",
+	modulename     => $modulename,
+	configfile     => "$HOME/.mts/mts.ini",
+	licensename    => $opts{'l'},
 );
 $mts->setup(
-	build => $opts{'b'},
-	debug => 1
+	build   => $opts{'b'},
+	debug   => $opts{'d'}?1:0,
 );
 
 exit(0);
 
 sub help {
-	print STDERR "$0 [options] <modulename>\n";
-	print STDERR "\tOptions:\n";
-	print STDERR "\t-h - help message (this message)\n";
-	print STDERR "\t-b (build or make)- build type\n";
-	print STDERR "\t-d - debug flag\n";
+
+print <<ENDHELP;
+setup.pl [options] <modulename>
+
+Options
+	-h : help message (this message)
+	-b <build target> : build type (defaults to make)
+	-l <license type> : license type (defaults to perl)
+	-d : debug flag
+
+License types and build targets are explained in the POD for Module::Template::Setup.
+
+ENDHELP
 
 	exit(0);
 }

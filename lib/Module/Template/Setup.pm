@@ -1,14 +1,15 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.14 2004-05-15 12:25:08 jonasbn Exp $
+# $Id: Setup.pm,v 1.15 2004-05-15 14:15:04 jonasbn Exp $
 
 use strict;
-use vars qw($VERSION);
+use vars qw($VERSION %licenses);
 use Env qw(HOME);
 use Cwd;
 use Carp;
 use Config::Simple;
 use CGI::FastTemplate;
+use Module::Template::Setup::Licenses qw(%licenses);
 
 $VERSION = '0.03';
 
@@ -51,7 +52,7 @@ sub new {
 }
 
 sub _get_data {
-	my ($self, $cfg, $params) = @_;
+	my ($self, $cfg, $args) = @_;
 
 	my $year = (localtime(time))[5] + 1900;
 
@@ -71,11 +72,16 @@ sub _get_data {
 			$cfg->param('LICENSEDETAILS')?$cfg->param('LICENSEDETAILS'):'';
 	}
 	
-	if ($params) {
+	if ($args) {
 		$all_defaults{'DATEYEAR'} =
-			$params->{'YEAR'}?$params->{'YEAR'}:"$year";
+			$args->{'YEAR'}?$args->{'YEAR'}:"$year";
 		$all_defaults{'VERSIONNUMBER'} =
-			$params->{'VERSIONNUMBER'}?$params->{'VERSIONNUMBER'}:'0.01';
+			$args->{'VERSIONNUMBER'}?$args->{'VERSIONNUMBER'}:'0.01';
+	
+		$all_defaults{'LICENSENAME'} =
+			$args->{'licensename'}?$args->{'licensename'}:'artistic';
+		$all_defaults{'LICENSEDETAILS'} =
+			$args->{'licensedetails'}?$args->{'licensedetails'}:$self->_get_license_details($all_defaults{'LICENSENAME'}, \%licenses);
 	}
 
 	foreach my $d (keys (%{$self->{'defaults'}})) {
@@ -83,6 +89,15 @@ sub _get_data {
 	}
 
 	return \%all_defaults;
+}
+
+sub _get_license_details {
+	my ($self, $licensename, $licenses) = @_;
+
+	my $licensedetails = $licenses->{$licensename}
+		|| carp "Unknown license $licensename - please notify the author\n";
+
+	return $licensedetails;
 }
 
 sub setup {
@@ -267,7 +282,7 @@ Module::Template::Setup - aid in setting up a module based on templates
 
 =head1 VERSION
 
-Module::Template::Setup 0.01
+Module::Template::Setup 0.03
 
 =head1 SYNOPSIS
 
@@ -542,6 +557,8 @@ Feedback also welcome on this address or directly to me on the address below (SE
 
 =item Test::Pod::Coverage
 
+=item Module::Template::Setup::Licenses
+
 =back
 
 =head1 AUTHOR
@@ -552,8 +569,8 @@ Jonas B. Nielsen (jonasbn) - E<lt>jonasbn@cpan.orgE<gt>
 
 Module::Template::Setup is (C) by Jonas B. Nielsen (jonasbn) 2004
 
-Module::Template::Setup is free software and is released
-under the Artistic License. See 
+Module::Template::Setup and related script and modules are free
+software and is released under the Artistic License. See 
 L<http://www.perl.com/language/misc/Artistic.html> for details. 
 
 =cut

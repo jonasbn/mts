@@ -4,6 +4,7 @@ Changes
 etc/mts.ini
 INSTALL
 lib/Module/Template/Setup.pm
+lib/Module/Template/Setup/Licenses.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml			Module meta-data (added by MakeMaker)
@@ -23,6 +24,7 @@ t/make_modulename_perl.t
 t/make_test_files.t
 t/pod-coverage.t
 t/pod.t
+t/licenses.t
 templates/00_load_t.tpl
 templates/Build_PL.tpl
 templates/Changes.tpl
