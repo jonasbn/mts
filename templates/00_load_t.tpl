@@ -3,7 +3,6 @@
 
 # $CVSTAG
 
-use Test::More tests => 2;
+use Test::More tests => 1;
 
-BEGIN { use_ok( '$MODULENAME_PERL' ); }
 BEGIN { use_ok( '$MODULENAME_PERL' ); }
