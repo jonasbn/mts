@@ -4,7 +4,9 @@
 ~$
 \.html$
 \.old$
+\.svn
 ^blib/
 ^MakeMaker-\d
 ^filegroup$
 \bCVS\b
+^pm_to_blib$
