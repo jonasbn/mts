@@ -1,6 +1,6 @@
 # Makefile.PL for Module-Template-Setup
 
-# $Id: Makefile.PL,v 1.1 2004-02-28 21:27:25 jonasbn Exp $
+# $Id: Makefile.PL,v 1.2 2004-03-29 14:24:10 jonasbn Exp $
 
 use strict;
 use ExtUtils::MakeMaker;
@@ -12,5 +12,11 @@ WriteMakefile(
 	'PREREQ_PM' => {
 		'Test::Harness'       => 0,
 		'Test::More'          => 0,
+		'Config::Simple'      => 0,
+		'Cwd'                 => 0,
+		'Env'                 => 0,
+		'CGI::FastTemplate'   => 0,
+		'Test::Pod'           => '0.95',
+		'Test::Pod::Coverage' => '0.08',
 	}
 );

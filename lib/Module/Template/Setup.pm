@@ -1,11 +1,12 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.2 2004-03-01 17:05:33 jonasbn Exp $
+# $Id: Setup.pm,v 1.3 2004-03-29 14:24:10 jonasbn Exp $
 
 use strict;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
-use XML::Conf;
+use Env qw(HOME);
+use Config::Simple;
 use Cwd;
 use CGI::FastTemplate;
 
@@ -20,7 +21,7 @@ sub setup {
 	my @files = qw(Makefile.PL Changes TODO INSTALL README);
 	my @tests = qw(00.load.t pod-coverage.t pod.t);
 
-	my $tpl = new CGI::FastTemplate("/Users/jonasbn/Develop/cvs-logicLAB/modules/Module-Template-Setup/templates");
+	my $tpl = new CGI::FastTemplate("blib/templates");
 	$tpl->define(
 		Changes          => "Changes.tpl",
 		INSTALL          => "INSTALL.tpl",
