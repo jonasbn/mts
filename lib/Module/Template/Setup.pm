@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.9 2004-03-30 16:08:43 jonasbn Exp $
+# $Id: Setup.pm,v 1.10 2004-03-30 16:21:56 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -246,7 +246,7 @@ __END__
 
 =head1 NAME
 
-Module::Template::Setup - aid in setting up new modules based on templates
+Module::Template::Setup - aid in setting up a module based on templates
 
 =head1 VERSION
 
@@ -261,7 +261,7 @@ $module->setup();
 =head1 ABSTRACT
 
 The goal of Module::Template::Setup is to provide a simple tool for speeding up
-the proces of spawning new modules by taking away all the borrowing work of
+the proces of spawning new modules by taking away all the boring work of
 adding all the required files and populating them with all the redundant 
 information.
 
@@ -269,17 +269,18 @@ The module aims to combine the following parameters:
 
 =over 4
 
-=item templated files
+=item * templated files
 
-=item default values
+=item * default values
 
-=item configurable values
+=item * configurable values
 
-=item commandline arguments
+=item * commandline arguments
 
 =back
 
-And will setup all the necessary files required in a module distribution.
+Module::Template::Setup is currently in B<alpha> and requires a lot of
+work (please see the B<TODO> below).
 
 =head1 DESCRIPTION
 
@@ -288,15 +289,15 @@ And will setup all the necessary files required in a module distribution.
 =head3 new
 
 This is the constructor. It takes one argument a string holding the modulename
-in either of the following formats.
+in either of the following formats:
 
 =over 4
 
-=item Modulename
+=item * Modulename
 
-=item Module::Name
+=item * Module::Name
 
-=item Module-Name
+=item * Module-Name
 
 =back
 
@@ -331,17 +332,19 @@ Reserverd words are a list of names, which are not suitable as template placehol
 
 =back
 
+I<more will follow...>
+
 =head2 DIRECTORIES
 
 The following directories are always built:
 
 =over 4
 
-=item Module-Name (this directory acts as root directory for everything else)
+=item * Module-Name (this directory acts as root directory for everything else)
 
-=item t (for tests)
+=item * t (for tests)
 
-=item lib (for the module)
+=item * lib (for the module)
 
 =back
 
@@ -385,6 +388,13 @@ placed in the appropriate sub directory based on module name (SEE: B<setup>).
 
 =back
 
+If you are not satisfied with the population of the templates, you can
+edit the templates to suit your needs.
+
+Example: if you prefer the Perl modulenaming convention with '::' instead of the
+filesystem convention with -, you can just exchange $MODULENAME with 
+$MODULENAME_PERL.
+
 =head2 DEFAULTS
 
 These are some of the defined defaults values for the PLACEHOLDERS used in the 
@@ -392,11 +402,11 @@ TEMPLATES.
 
 =over 4
 
-=item CVSTAG is set to B<$Id: Setup.pm,v 1.9 2004-03-30 16:08:43 jonasbn Exp $> 
+=item * CVSTAG is set to B<\$Id\$> 
 
-=item DATEYEAR is set to current year (for copyright notice)
+=item * DATEYEAR is set to current year (for copyright notice)
 
-=item VERSIONNUMBER defaults to 0.01
+=item * VERSIONNUMBER defaults to 0.01
 
 =back
 
@@ -433,11 +443,11 @@ This is auto-resolved from the MODULENAME
 
 =item LICENSENAME
 
-Should be set in you configuration file
+Should be set in your configuration file
 
 =item LICENSEDETAILS
 
-Should be set in you configuration file
+Should be set in your configuration file
 
 =back
 
