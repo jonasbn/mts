@@ -1,4 +1,4 @@
-# $Id: make_module_file.t,v 1.4 2004-03-30 14:47:01 jonasbn Exp $
+# $Id: make_module_file.t,v 1.5 2004-03-30 14:51:15 jonasbn Exp $
 
 use strict;
 use Test::More tests => 2;
@@ -23,5 +23,6 @@ ok($mts->_make_module_file($tpl));
 
 ok(-e $mts->{'defaults'}->{'MODULENAME_FILE'} && -f $mts->{'defaults'}->{'MODULENAME_FILE'});
 
+unlink($mts->{'defaults'}->{'MODULENAME_FILE'});
 chdir("..");
 rmdir($modulename);

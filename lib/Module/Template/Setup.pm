@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.7 2004-03-30 14:47:01 jonasbn Exp $
+# $Id: Setup.pm,v 1.8 2004-03-30 14:51:15 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -28,7 +28,7 @@ sub new {
 
 	@{$self->{'moduledirs'}} 
 		= $self->_make_modulename_dirs();
-		
+
 	$self->{'defaults'}->{'MODULEDIRS'} = join('/',@{$self->{'moduledirs'}});
 
 	my $cfg = AppConfig->new();
