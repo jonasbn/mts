@@ -1,24 +1,27 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.2 2004-02-29 23:35:44 jonasbn Exp $
+# $Id: setup.pl,v 1.3 2004-03-01 16:50:33 jonasbn Exp $
 
 use strict;
 use XML::Conf;
+use Cwd;
 use CGI::FastTemplate;
 
 my @dirs = qw(t lib);
 my @files = qw(Makefile.PL Changes TODO INSTALL README);
+my @tests = qw(00.load.t pod-coverage.t pod.t);
 
 my $tpl = new CGI::FastTemplate("/Users/jonasbn/Develop/cvs-logicLAB/modules/Module-Template-Setup/templates");
 $tpl->define(
-	Changes        => "Changes.tpl",
-	INSTALL        => "INSTALL.tpl",
-	Makefile_PL    => "Makefile_PL.tpl",
-	README         => "README.tpl",
-	TODO           => "TODO.tpl",
-	pod_t          => "pod_t.tpl",
-	pod_coverage_t => "pod_coverage_t.tpl",
-	module_pm      => "module_pm.tpl",
+	Changes          => "Changes.tpl",
+	INSTALL          => "INSTALL.tpl",
+	Makefile_PL      => "Makefile_PL.tpl",
+	README           => "README.tpl",
+	TODO             => "TODO.tpl",
+	pod_t            => "pod_t.tpl",
+	'pod-coverage_t' => "pod-coverage_t.tpl",
+	module_pm        => "module_pm.tpl",
+	'00_load_t'      => "00_load_t.tpl",
 );
 
 
@@ -31,16 +34,22 @@ mkdir($modulename);
 chdir($modulename);
 make_dirs(@dirs);
 make_files($tpl, $defaults, @files);
+make_test_files($tpl, $defaults, @tests);
+
+my $moduledir = getcwd();
 make_module_dirs($modulename);
 make_module_file($modulename, $tpl, $defaults);
+chdir($moduledir);
 
 exit(0);
 
 sub get_data {
 	my $modulename = shift;
 
-	my $m = $modulename;
-	my ($modulename_perl) = $m =~ s/-/::/g;
+	my $modulename_perl = $modulename;
+
+	$modulename_perl =~ s/-/::/g;
+
 	my @dirs = split(/::/, $modulename_perl);
 	my $modulename_file = pop(@dirs);
 	$modulename_file .= '.pm';
@@ -67,7 +76,7 @@ sub get_data {
 
 sub make_module_dirs {
 	my $modulename = shift;
-	
+
 	chdir('lib');
 	my @dirs = split(/-/, $modulename);
 	pop(@dirs);
@@ -76,6 +85,19 @@ sub make_module_dirs {
 		mkdir($dir);
 		chdir($dir);
 	}
+	
+	return 1;
+}
+
+sub make_test_files {
+	my ($tpl, $defaults, @tests) = @_;
+
+	my $moduledir = getcwd();
+	chdir('t');
+	foreach my $test (@tests) {
+		make_file($test, $tpl, $defaults);
+	}
+	chdir($moduledir);
 	
 	return 1;
 }
@@ -117,7 +139,7 @@ sub make_file {
 
 	if (! $template_name) {
 		$template_name = $filename;
-		$template_name =~ s/\./_/;
+		$template_name =~ s/\./_/g;
 		$template_name =~ s[_(w+)$][\.$1];
 	}
 	$tpl->assign($defaults);
