@@ -1,8 +1,12 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.13 2004-05-15 14:15:04 jonasbn Exp $
+$Id: Changes,v 1.14 2004-05-25 19:52:46 jonasbn Exp $
 
-0.03
+0.04
+
+- Added some simple POD to the module template
+
+0.03 Released Sat May 15 2004, update not necessary
 
 - Added possibility of adding a license using setup.pl or giving one of the
   known licenses: artistic (default), lgpl, lgp and bsd
