@@ -1,14 +1,18 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.6 2004-03-31 07:38:04 jonasbn Exp $
+# $Id: setup.pl,v 1.7 2004-03-31 10:48:55 jonasbn Exp $
 
 use strict;
+use Env qw(HOME);
 use lib qw(lib ../lib);
 use Module::Template::Setup;
 
 my $modulename = $ARGV[0];
 
-my $mts = Module::Template::Setup->new(modulename => $modulename);
+my $mts = Module::Template::Setup->new(
+	modulename => $modulename,
+	configfile => "$HOME/.mts/mts.ini"
+);
 $mts->setup();
 
 exit(0);

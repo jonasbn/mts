@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.11 2004-03-31 07:38:04 jonasbn Exp $
+# $Id: Setup.pm,v 1.12 2004-03-31 10:48:55 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
@@ -10,7 +10,7 @@ use Carp;
 use Config::Simple;
 use CGI::FastTemplate;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 sub new {
 	my ($class, %params) = @_;
@@ -56,9 +56,11 @@ sub _get_data {
 	my $year = (localtime(time))[5] + 1900;
 
 	my %all_defaults;
+	$all_defaults{'CVSTAG'} = "\$Id\$";
+	
 	if ($cfg) {
 		$all_defaults{'CVSTAG'} = 
-			$cfg->param('CVSTAG')?$cfg->param('CVSTAG'):"\$Id\$";
+			$cfg->param('CVSTAG')?$cfg->param('CVSTAG'):$all_defaults{'CVSTAG'};
 		$all_defaults{'AUTHORNAME'} =
 			$cfg->param('AUTHORNAME')?$cfg->param('AUTHORNAME'):'';
 		$all_defaults{'AUTHOREMAIL'} =
@@ -113,7 +115,7 @@ sub setup {
 
 	my $moduledir = getcwd();
 	$self->_make_module_dirs($self->{'defaults'}->{'MODULENAME'});
-	$self->_make_module_file($self->{'defaults'}->{'MODULENAME'}, $tpl);
+	$self->_make_module_file($tpl);
 	chdir($moduledir);
 
 	return 1;
@@ -146,14 +148,11 @@ sub _make_modulename_dirs {
 sub _make_module_dirs {
 	my ($self) = @_;
 
-	my $moduledir = getcwd();
 	chdir('lib');
-
 	foreach my $dir (@{$self->{'moduledirs'}}) {
 		mkdir($dir);
 		chdir($dir);
 	}
-	chdir($moduledir);
 
 	return 1;
 }

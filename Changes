@@ -1,6 +1,10 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.4 2004-03-31 07:38:04 jonasbn Exp $
+$Id: Changes,v 1.5 2004-03-31 10:48:55 jonasbn Exp $
+
+0.02 Released Wed Mar 31 2004, update recommended
+
+- Fixed two bugs, please see the BUGS file
 
 0.01 Released Tue Mar 30 2004
 

@@ -1,6 +1,6 @@
 BUGS file for Module-Template-Setup
 
-$Id: BUGS,v 1.2 2004-03-31 09:55:32 jonasbn Exp $
+$Id: BUGS,v 1.3 2004-03-31 10:48:55 jonasbn Exp $
 
 - Can't locate object method "assign" via package "Module-Maintain"
   (perhaps you forgot to load "Module-Maintain"?) at
@@ -8,7 +8,11 @@ $Id: BUGS,v 1.2 2004-03-31 09:55:32 jonasbn Exp $
 
   Apparently is tries to call something on the module being created??
 
+  Fixed in 0.02 - problem with too many parameters
+
 - There seem to be a problem with CVSTAG:
   [CGI::FastTemplate] Warning: no value found for variable: CVSTAG
 
   This tag SHOULD be set as default??
+
+  Fixed in 0.02 - problem with configuration conditional

@@ -1,10 +1,12 @@
 bin/setup.pl
+BUGS
 Changes
 etc/mts.ini
 INSTALL
 lib/Module/Template/Setup.pm
 Makefile.PL
 MANIFEST			This list of files
+META.yml			Module meta-data (added by MakeMaker)
 README
 t/00_load.t
 t/config.t
@@ -31,4 +33,3 @@ templates/pod_t.tpl
 templates/README.tpl
 templates/TODO.tpl
 TODO
-META.yml                                Module meta-data (added by MakeMaker)
