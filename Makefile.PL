@@ -1,6 +1,6 @@
 # Makefile.PL for Module-Template-Setup
 
-# $Id: Makefile.PL,v 1.3 2004-03-30 08:45:53 jonasbn Exp $
+# $Id: Makefile.PL,v 1.4 2004-03-30 14:47:01 jonasbn Exp $
 
 use strict;
 use ExtUtils::MakeMaker;
@@ -11,7 +11,7 @@ WriteMakefile(
     'VERSION_FROM'  => 'lib/Module/Template/Setup.pm', # finds $VERSION
 	'PREREQ_PM' => {
 		'Test::More'          => 0,
-		'Config::Simple'      => 0,
+		'AppConfig'           => 0,
 		'Cwd'                 => 0,
 		'Carp'                => 0,
 		'Env'                 => 0,

@@ -1,7 +1,7 @@
-# $Id: get_data.t,v 1.2 2004-03-30 13:21:43 jonasbn Exp $
+# $Id: get_data.t,v 1.3 2004-03-30 14:47:01 jonasbn Exp $
 
 use strict;
-use Test::More tests => 3;
+use Test::More tests => 2;
 use lib qw(blib/lib);
 use Module::Template::Setup;
 

@@ -1,4 +1,4 @@
-# $Id: make_module_dirs.t,v 1.2 2004-03-30 13:13:02 jonasbn Exp $
+# $Id: make_module_dirs.t,v 1.3 2004-03-30 14:47:01 jonasbn Exp $
 
 use strict;
 use Test::More tests => 5;
@@ -26,7 +26,6 @@ foreach my $dir (@dirs) {
 
 my @reverse_dirs = reverse(@dirs);
 foreach my $dir (@reverse_dirs) {
-	print STDERR "dir = $dir\n";
 	chdir("..");
 	rmdir($dir);
 }

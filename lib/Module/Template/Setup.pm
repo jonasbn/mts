@@ -1,13 +1,13 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.6 2004-03-30 13:13:02 jonasbn Exp $
+# $Id: Setup.pm,v 1.7 2004-03-30 14:47:01 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION);
 use Env qw(HOME);
 use Cwd;
 use Carp;
-use Config::Simple;
+use AppConfig;
 use CGI::FastTemplate;
 
 $VERSION = '0.01';
@@ -17,26 +17,57 @@ sub new {
 
 	my $self = bless {}, $class || ref $class;
 
-	$self->{'modulename'} 
+	$self->{'defaults'}->{'MODULENAME'} 
 		= $self->_handle_modulename($params{'modulename'});
 
-	$self->{'modulename_file'} 
+	$self->{'defaults'}->{'MODULENAME_FILE'} 
 		= $self->_make_modulename_file();
 
-	$self->{'modulename_perl'} 
+	$self->{'defaults'}->{'MODULENAME_PERL'} 
 		= $self->_make_modulename_perl();
 
 	@{$self->{'moduledirs'}} 
 		= $self->_make_modulename_dirs();
+		
+	$self->{'defaults'}->{'MODULEDIRS'} = join('/',@{$self->{'moduledirs'}});
 
-	my $cfg;
+	my $cfg = AppConfig->new();
 	my $configfile = "$HOME/.mts/mts.ini";
 	if (-e  $configfile && -r $configfile) {
-		$cfg = new Config::Simple($configfile);
+		$cfg->file($configfile);
 	}
-	$self->{'defaults'} = $self->_get_data($cfg);
+	$self->{'defaults'} = $self->_get_data($cfg, \%params);
 
 	return $self;
+}
+
+sub _get_data {
+	my ($self, $cfg, $params) = @_;
+
+	my $year = (localtime(time))[5] + 1900;
+
+	my %all_defaults = (
+		CVSTAG          => 
+			$cfg->{'CVSTAG'}?$cfg->{'CVSTAG'}:"\$Id\$",
+		AUTHORNAME      =>
+			$cfg->{'AUTHORNAME'}?$cfg->{'AUTHORNAME'}:'',
+		AUTHOREMAIL     =>
+			$cfg->{'AUTHOREMAIL'}?$cfg->{'AUTHOREMAIL'}:'',
+		LICENSENAME     =>
+			$cfg->{'LICENSENAME'}?$cfg->{'LICENSENAME'}:'',
+		LICENSEDETAILS  =>
+			$cfg->{'LICENSEDETAILS'}?$cfg->{'LICENSEDETAILS'}:'',
+		DATEYEAR        => 
+			$params->{'YEAR'}?$params->{'YEAR'}:"$year",
+		VERSIONNUMBER   =>
+			$params->{'VERSIONNUMBER'}?$params->{'VERSIONNUMBER'}:'0.01',
+	);
+
+	foreach my $d (keys (%{$self->{'defaults'}})) {
+		$all_defaults{$d} = $self->{'defaults'}->{$d};
+	}
+
+	return \%all_defaults;
 }
 
 sub setup {
@@ -59,46 +90,20 @@ sub setup {
 		'00_load_t'      => "00_load_t.tpl",
 	);
 
-	$tpl->assign($self->defaults);
+	$tpl->assign($self->{'defaults'});
 
-	mkdir($self->{'modulename'});
-	chdir($self->{'modulename'});
+	mkdir($self->{'defaults'}->{'MODULENAME'});
+	chdir($self->{'defaults'}->{'MODULENAME'});
 	$self->_make_dirs(@dirs);
 	$self->_make_files($tpl, @files);
 	$self->_make_test_files($tpl, @tests);
 
 	my $moduledir = getcwd();
-	$self->_make_module_dirs($self->{'modulename'});
-	$self->_make_module_file($self->{'modulename'}, $tpl);
+	$self->_make_module_dirs($self->{'defaults'}->{'MODULENAME'});
+	$self->_make_module_file($self->{'defaults'}->{'MODULENAME'}, $tpl);
 	chdir($moduledir);
 
 	return 1;
-}
-
-sub _get_data {
-	my ($self, $cfg) = @_;
-
-	my $year = (localtime(time))[5] + 1900;
-
-	my %defaults = (
-		CVSTAG          => $cfg->{'cvstag'}?$cfg->{'cvstag'}:"\$Id\$",
-		MODULENAME      => $self->{'modulename'},
-		MODULENAME_PERL => $self->{'modulename_perl'},
-		MODULENAME_FILE => $self->{'modulename_file'},
-		MODULEDIRS      => $self->{'moduledirs'},
-		AUTHORNAME      =>
-			$cfg->{'AUTHORNAME'}?$cfg->{'AUTHORNAME'}:'',
-		AUTHOREMAIL     =>
-			$cfg->{'AUTHOREMAIL'}?$cfg->{'AUTHOREMAIL'}:'',
-		LICENSENAME     => '',
-			$cfg->{'LICENSENAME'}?$cfg->{'LICENSENAME'}:'',
-		LICENSEDETAILS  => '',
-			$cfg->{'LICENSEDETAILS'}?$cfg->{'LICENSEDETAILS'}:'',
-		DATEYEAR        => $year,
-		VERSIONNUMBER   => '0.01',
-	);
-
-	return \%defaults;
 }
 
 sub _handle_modulename {
@@ -119,7 +124,7 @@ sub _handle_modulename {
 sub _make_modulename_dirs {
 	my ($self) = @_;
 
-	my @dirs = split(/-/, $self->{'modulename'});
+	my @dirs = split(/-/, $self->{'defaults'}->{'MODULENAME'});
 	pop(@dirs);
 
 	return @dirs;
@@ -156,17 +161,20 @@ sub _make_test_files {
 sub _make_modulename_file {
 	my ($self) = @_;
 
-	my @dirs = split(/-/, $self->{'modulename'});
+	my @dirs = split(/-/, $self->{'defaults'}->{'MODULENAME'});
 	my $file = pop(@dirs);
-	$file .= '.pm';
-
-	return $file;
+	if ($file) {
+		$file .= '.pm';
+		return $file;
+	} else {
+		return undef;
+	}
 }
 
 sub _make_modulename_perl {
 	my ($self) = @_;
 
-	my $name = $self->{'modulename'};
+	my $name = $self->{'defaults'}->{'MODULENAME'};
 	$name =~ s/-/::/g;
 
 	return $name;
@@ -175,7 +183,7 @@ sub _make_modulename_perl {
 sub _make_module_file {
 	my ($self, $tpl) = @_;
 
-	$self->_make_file($self->{'modulename_file'}, $tpl, 'module_pm');
+	$self->_make_file($self->{'defaults'}->{'MODULENAME_FILE'}, $tpl, 'module_pm');
 
 	return 1;
 }
