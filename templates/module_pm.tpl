@@ -36,6 +36,12 @@ or by sending mail to
 
 =head1 SEE ALSO
 
+=over
+
+=item 
+
+=back
+
 =head1 AUTHOR
 
 $AUTHORNAME - E<gt> $AUTHOREMAIL E<gt>
