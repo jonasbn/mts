@@ -1,9 +1,11 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.7 2004-03-31 11:38:49 jonasbn Exp $
+$Id: Changes,v 1.8 2004-03-31 11:42:00 jonasbn Exp $
 
 0.03
 
+- Added <> signs around the author emailaddress in the module template
+ 
 - Added CVSTAG to module template
 
 - Added MANIFEST.SKIP template (MANIFEST_SKIP.tpl)
