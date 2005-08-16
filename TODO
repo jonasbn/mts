@@ -1,6 +1,9 @@
 TODO file for Module-Template-Setup
 
-$Id: TODO,v 1.10 2005-08-16 08:01:27 jonasbn Exp $
+$Id: TODO,v 1.11 2005-08-16 08:11:44 jonasbn Exp $
+
+- Add possibility of making flat project directories for single file modules
+  (not adding the deep lib path)
 
 - Add Makefile.PL compliance for CPAN/BSDPAN (see Games::Bingo)
 
