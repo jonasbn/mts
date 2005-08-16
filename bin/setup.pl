@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.9 2004-05-15 14:15:04 jonasbn Exp $
+# $Id: setup.pl,v 1.10 2005-08-16 08:01:27 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION %opts);
@@ -45,9 +45,11 @@ setup.pl [options] <modulename>
 
 Options
 	-h : help message (this message)
-	-b <build target> : build type (defaults to make)
+	-b <build target> : build type (make | build) (defaults to make)
 	-l <license type> : license type (defaults to perl)
 	-d : debug flag
+
+Build targets are ExtUtils::MakeMaker or Module::Build respectively.
 
 License types and build targets are explained in the POD for Module::Template::Setup.
 

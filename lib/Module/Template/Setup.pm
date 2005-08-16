@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.16 2004-05-15 14:25:53 jonasbn Exp $
+# $Id: Setup.pm,v 1.17 2005-08-16 08:03:53 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION %licenses);
@@ -11,7 +11,7 @@ use Config::Simple;
 use CGI::FastTemplate;
 use Module::Template::Setup::Licenses qw(%licenses);
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 sub new {
 	my ($class, %params) = @_;

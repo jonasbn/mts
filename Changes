@@ -1,8 +1,10 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.14 2004-05-25 19:52:46 jonasbn Exp $
+$Id: Changes,v 1.15 2005-08-16 08:03:53 jonasbn Exp $
 
 0.04
+
+- Added better information from the help message in setup
 
 - Added some simple POD to the module template
 

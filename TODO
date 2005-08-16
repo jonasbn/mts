@@ -1,6 +1,8 @@
 TODO file for Module-Template-Setup
 
-$Id: TODO,v 1.9 2004-05-15 14:50:46 jonasbn Exp $
+$Id: TODO,v 1.10 2005-08-16 08:01:27 jonasbn Exp $
+
+- Add Makefile.PL compliance for CPAN/BSDPAN (see Games::Bingo)
 
 - Add handling of configuration file for values
 
