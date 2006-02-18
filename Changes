@@ -1,12 +1,15 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.15 2005-08-16 08:03:53 jonasbn Exp $
+$Id: Changes,v 1.16 2006-02-18 11:34:27 jonasbn Exp $
 
 0.04
+
+- Added makefile building parameter to Build.PL template
 
 - Added better information from the help message in setup
 
 - Added some simple POD to the module template
+
 
 0.03 Released Sat May 15 2004, update not necessary
 
@@ -31,13 +34,16 @@ $Id: Changes,v 1.15 2005-08-16 08:03:53 jonasbn Exp $
 
 - Added MANIFEST.SKIP template (MANIFEST_SKIP.tpl)
 
+
 0.02 Released Wed Mar 31 2004, update recommended
 
 - Fixed two bugs, please see the BUGS file
 
+
 0.01 Released Tue Mar 30 2004
 
 - Fixed not-updated bin/setup.pl
+
 
 Pre 0.01
 
