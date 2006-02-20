@@ -20,8 +20,6 @@ $MODULENAME_PERL -
 
 =head1 SYNOPSIS
 
-=head1 ABSTRACT
-
 =head1 DESCRIPTION
 
 =head1 BUGS

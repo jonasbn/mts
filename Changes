@@ -1,8 +1,11 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.17 2006-02-20 15:27:15 jonasbn Exp $
+$Id: Changes,v 1.18 2006-02-20 15:39:51 jonasbn Exp $
 
 0.04
+
+- Removed ABSTRACT headline from module template (this was there due to a 
+  misinterpretation by the author)
 
 - Added Module::Build related directory and Build file to MANIFEST.SKIP
 
