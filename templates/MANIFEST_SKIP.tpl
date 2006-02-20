@@ -4,8 +4,11 @@
 ~$
 \.html$
 \.old$
+\.gz$
 \.svn
 ^blib/
+^_build
+^Build$
 ^MakeMaker-\d
 ^filegroup$
 \bCVS\b
