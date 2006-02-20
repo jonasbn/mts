@@ -1,8 +1,10 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.16 2006-02-18 11:34:27 jonasbn Exp $
+$Id: Changes,v 1.17 2006-02-20 15:27:15 jonasbn Exp $
 
 0.04
+
+- Added Module::Build related directory and Build file to MANIFEST.SKIP
 
 - Added makefile building parameter to Build.PL template
 
