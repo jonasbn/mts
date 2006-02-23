@@ -1,6 +1,10 @@
 TODO file for Module-Template-Setup
 
-$Id: TODO,v 1.11 2005-08-16 08:11:44 jonasbn Exp $
+$Id: TODO,v 1.12 2006-02-23 21:32:19 jonasbn Exp $
+
+- Add POD on actual code in Module::Template::Setup
+
+- Change templating system to Template::Toolkit
 
 - Add possibility of making flat project directories for single file modules
   (not adding the deep lib path)

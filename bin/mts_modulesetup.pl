@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: setup.pl,v 1.10 2005-08-16 08:01:27 jonasbn Exp $
+# $Id: mts_modulesetup.pl,v 1.1 2006-02-23 21:32:19 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION %opts);

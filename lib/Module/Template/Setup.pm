@@ -1,6 +1,6 @@
 package Module::Template::Setup;
 
-# $Id: Setup.pm,v 1.17 2005-08-16 08:03:53 jonasbn Exp $
+# $Id: Setup.pm,v 1.18 2006-02-23 21:32:19 jonasbn Exp $
 
 use strict;
 use vars qw($VERSION %licenses);
@@ -228,7 +228,8 @@ sub _make_modulename_perl {
 sub _make_module_file {
 	my ($self, $tpl) = @_;
 
-	$self->_make_file($self->{'defaults'}->{'MODULENAME_FILE'}, $tpl, 'module_pm');
+	$self->_make_file(
+		$self->{'defaults'}->{'MODULENAME_FILE'}, $tpl, 'module_pm');
 
 	return 1;
 }
@@ -286,11 +287,11 @@ Module::Template::Setup 0.03
 
 =head1 SYNOPSIS
 
-my $module = Module::Template::Setup->new($modulename);
+	my $module = Module::Template::Setup->new($modulename);
+	
+	$module->setup();
 
-$module->setup();
-
-=head1 ABSTRACT
+=head1 DESCRIPTION
 
 The goal of Module::Template::Setup is to provide a simple tool for speeding up
 the proces of spawning new modules by taking away all the boring work of
@@ -313,8 +314,6 @@ The module aims to combine the following parameters:
 
 Module::Template::Setup is currently in B<alpha> and requires a lot of
 work (please see the B<TODO> below).
-
-=head1 DESCRIPTION
 
 =head2 METHODS
 
@@ -389,7 +388,8 @@ a file based on a template (SEE: B<TEMPLATES>)
 
 =head2 RESERVED WORDS
 
-Reserverd words are a list of names, which are not suitable as template placeholders.
+Reserverd words are a list of names, which are not suitable as template 
+placeholders.
 
 =over 4
 
@@ -479,8 +479,8 @@ TEMPLATES.
 
 =head2 PLACEHOLDERS
 
-Apart from the values mentioned in DEFAULTS (above) this is a list of the current 
-placeholders, which can be set.
+Apart from the values mentioned in DEFAULTS (above) this is a list of the 
+current placeholders, which can be set.
 
 =over 4
 
@@ -540,7 +540,8 @@ please report them using the following email address:
 
 E<lt>bug-module-template-setup@rt.cpan.orgE<gt>
 
-Feedback also welcome on this address or directly to me on the address below (SEE: B<AUTHOR>).
+Feedback also welcome on this address or directly to me on the address below 
+(SEE: B<AUTHOR>).
 
 =head1 TODO
 
@@ -588,7 +589,7 @@ Jonas B. Nielsen (jonasbn) - E<lt>jonasbn@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Module::Template::Setup is (C) by Jonas B. Nielsen (jonasbn) 2004
+Module::Template::Setup is (C) by Jonas B. Nielsen (jonasbn) 2004-2006
 
 Module::Template::Setup and related script and modules are free
 software and is released under the Artistic License. See 

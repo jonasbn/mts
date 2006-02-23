@@ -1,8 +1,12 @@
 Changes file for Module-Template-Setup
 
-$Id: Changes,v 1.18 2006-02-20 15:39:51 jonasbn Exp $
+$Id: Changes,v 1.19 2006-02-23 21:32:19 jonasbn Exp $
 
 0.04
+
+- Added mts_moduleadd.pl
+
+- Renamed bin/setup.pl to mts_modulesetup.pl
 
 - Removed ABSTRACT headline from module template (this was there due to a 
   misinterpretation by the author)
