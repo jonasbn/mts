@@ -19,6 +19,7 @@ WriteMakefile(
 		'Test::Pod'           => '0.95',
 		'Test::Pod::Coverage' => '0.08',
 		'File::Find'          => 0,
-		'File::Spec'          => 0
+		'File::Spec'          => 0,
+		'Test::Prereq'        => 0,
 	}
 );
