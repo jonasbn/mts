@@ -2,6 +2,14 @@ Changes file for Module-Template-Setup
 
 $Id: Changes,v 1.19 2006-02-23 21:32:19 jonasbn Exp $
 
+HEAD
+
+- Added changes.t automatic assertion of the integrity of the Changes file
+  [MTS-5]
+
+  https://logiclab.jira.com/browse/MTS-5
+
+
 0.04
 
 - Added mts_moduleadd.pl
