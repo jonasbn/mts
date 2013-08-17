@@ -9,9 +9,6 @@ HEAD
 
   https://logiclab.jira.com/browse/MTS-5
 
-
-0.04
-
 - Added mts_moduleadd.pl
 
 - Renamed bin/setup.pl to mts_modulesetup.pl
@@ -28,7 +25,9 @@ HEAD
 - Added some simple POD to the module template
 
 
-0.03 Released Sat May 15 2004, update not necessary
+0.03 2004-05-15
+
+- Update not necessary
 
 - Added possibility of adding a license using setup.pl or giving one of the
   known licenses: artistic (default), lgpl, lgp and bsd
@@ -52,17 +51,16 @@ HEAD
 - Added MANIFEST.SKIP template (MANIFEST_SKIP.tpl)
 
 
-0.02 Released Wed Mar 31 2004, update recommended
+0.02 2004-03-31
+
+- Update recommended
 
 - Fixed two bugs, please see the BUGS file
 
 
-0.01 Released Tue Mar 30 2004
+0.01 2004-03-30
 
 - Fixed not-updated bin/setup.pl
-
-
-Pre 0.01
 
 - Added creation of files:
 	- Changes
@@ -88,4 +86,3 @@ Pre 0.01
 - Many fixes, changes
 
 - Docs and tests added
-
