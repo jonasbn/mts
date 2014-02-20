@@ -8,3 +8,6 @@
 ^MakeMaker-\d
 ^filegroup$
 \bCVS\b
+
+# Github - Travis integration
+\.travis\.yml
